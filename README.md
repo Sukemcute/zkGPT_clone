@@ -21,16 +21,25 @@ To ensure smooth execution, we recommend using a server with the following speci
 
 
 ## Experiment Script
+Cài đặt dependencies
+``` bash
+sudo systemctl restart NetworkManager
+```
 ### Clone the repo
 To run the code, make sure you clone with
 ``` bash
-git clone --recurse-submodules git@github.com:security-Anonymous/zkTransformer.git
+# Cập nhật submodules
+git submodule update --init --recursive
 ```
 since the mcl library is included as a submodule.
 
 ### Install GMP Library
 ```
 sudo apt install libgmp-dev
+```
+# Build với Release mode (tối ưu cho production)
+``` bash
+./build.sh Release
 ```
 
 ### Run a demo of proving LLM inference
@@ -47,3 +56,4 @@ The circuit initiation phase may take minutes because brute-forcely computing pl
 - [Unlocking the lookup singularity with Lasso](https://eprint.iacr.org/2023/1216)
 
 - [mcl](https://github.com/herumi/mcl)
+
