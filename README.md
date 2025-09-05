@@ -23,7 +23,8 @@ To ensure smooth execution, we recommend using a server with the following speci
 ## Experiment Script
 Cài đặt dependencies
 ``` bash
-sudo systemctl restart NetworkManager
+# Cài đặt các dependency cần thiết
+apt install -y build-essential cmake libgmp-dev git
 ```
 ### Clone the repo
 To run the code, make sure you clone with
@@ -56,4 +57,5 @@ The circuit initiation phase may take minutes because brute-forcely computing pl
 - [Unlocking the lookup singularity with Lasso](https://eprint.iacr.org/2023/1216)
 
 - [mcl](https://github.com/herumi/mcl)
+
 
