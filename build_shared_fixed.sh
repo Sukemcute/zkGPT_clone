@@ -19,15 +19,16 @@ fi
 mkdir -p "${BUILD_DIR}"
 cd "${BUILD_DIR}"
 
+# Copy CMakeLists_shared.txt to current directory
+cp ../CMakeLists_shared.txt ./CMakeLists.txt
+
 # Configure with CMake
 echo "Configuring with CMake..."
 cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
       -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
       -DCMAKE_CXX_FLAGS="-fPIC" \
       -G "CodeBlocks - Unix Makefiles" \
-      -S .. \
-      -B . \
-      -f ../CMakeLists_shared.txt
+      .
 
 # Build
 echo "Building shared library..."
@@ -45,6 +46,7 @@ cp ../src/wrapper.h ../dist/include/
 
 # Create pkg-config file
 echo "Creating pkg-config file..."
+mkdir -p ../dist/lib/pkgconfig
 cat > ../dist/lib/pkgconfig/zkgpt.pc << EOF
 prefix=/usr/local
 exec_prefix=\${prefix}
