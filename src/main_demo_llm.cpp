@@ -22,19 +22,37 @@ int main(int argc, char **argv)
 {
     initPairing(mcl::BN254);
     
-    // range prover
-    range_prover range_prover(12, 12, 64, 768, 2304, 30, 32, 1); // 12 layer, 12 head, 64 channel, 768 head dim, 2304 linear dim, 30 seq len, 32 threads
+        // 1. Range Prover cho các phép toán phi tuyến
+    range_prover range_prover(
+        32,     // layers
+        32,     // heads
+        128,    // head_dim (4096 / 32)
+        4096,   // model_dim
+        14336,  // ffn_dim
+        512,    // seq_len (ví dụ chọn 512, bạn có thể tăng lên 2k, 4k, 8k...)
+        32,     // threads
+        1       // batch_size (ví dụ)
+    );
     range_prover.init();
     range_prover.build();
-    double range_prover_time = range_prover.prove();
+    double range_prover_time = range_prover.prove();  // ← PROVE RANGE CONSTRAINTS
 
-    // gkr
+    // 2. GKR Prover cho các phép toán tuyến tính
     prover p;
-    LLM nn(12, 12, 64, 768, 2304);  // 12 layer, 12 head, 64 channel, 768 head dim, 2304 linear dim
-    nn.create(p, 1);
+    LLM nn(
+        32,     // layers
+        32,     // heads
+        128,    // head_dim
+        4096,   // model_dim
+        14336   // ffn_dim
+    );  // Tạo Llama-3.2-3B model (rút gọn)
+    nn.create(p, 1);  // ← TẠO CIRCUIT CHO LLAMA-3.2-3B
+
+    // === PHẦN VERIFY ===
     verifier v(&p, p.C);
     v.range_prove(range_prover_time);
-    v.prove(32); // prove with 32 threads
+    v.prove(32);  // ← VERIFY VỚI 32 THREADS
+
 
 }
 
